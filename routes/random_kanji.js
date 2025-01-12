@@ -11,9 +11,12 @@ const kanji_data = JSON.parse(fs.readFileSync(kanjiDataPath, "utf8"));
 
 // Function to get a random kanji character
 const getRandomKanji = (kanjis) => {
-  const arr = Object.keys(kanjis); // Use keys to get only the kanji characters
-  const randomIndex = Math.floor(Math.random() * arr.length);
-  return arr[randomIndex]; // Return the kanji character
+  const filteredKanjis = Object.entries(kanjis).filter((kanji) => {
+    return kanji[1].kmeaning;
+  });
+  // Use keys to get only the kanji characters
+  const randomIndex = Math.floor(Math.random() * filteredKanjis.length);
+  return filteredKanjis[randomIndex][0]; // Return the kanji character
 };
 
 // New route to get a random kanji

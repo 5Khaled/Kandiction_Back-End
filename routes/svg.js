@@ -3,7 +3,7 @@ import path from "path";
 import fs from "fs";
 const router = express.Router();
 
-const __dirname = path.resolve(); // Make sure to handle __dirname correctly
+const __dirname = path.resolve(); // handling __dirname correctly
 
 console.log("Caching SVGs...");
 
@@ -21,7 +21,13 @@ router.get("/:svg", (req, res) => {
   const svg = req.params.svg;
 
   if (svgCache.has(svg)) {
-    res.type("image/svg+xml").send(svgCache.get(svg));
+    console.log(svgCache.get(svg));
+    let svgContent = svgCache.get(svg);
+
+    // Remove comment block(s)
+    svgContent = svgContent.replace(/<!--[\s\S]*?-->/g, "");
+
+    res.type("image/svg+xml").send(svgContent);
   } else {
     res.status(404).send("Not found!");
   }
